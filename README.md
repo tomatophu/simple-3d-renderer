@@ -8,7 +8,7 @@ Edit the "self._map" variable in main.py to change it.
 Use `<WASD>` to move forward, left right, and back.  
 Use `<Space>` and `<Shift>` to move up and down.  
 Use the `<arrow keys>` to change pitch and yaw.  
-Use the `<apostrophe>'` and `<return>` to change roll.  
+Use the `<apostrophe>` and `<return>` to change roll.  
 
 ## Compatibility
 This renderer was written in Python 3.13, and may not run with older versions
