@@ -1,8 +1,12 @@
 # simple-3d-renderer
 A simple point-based 3D renderer written in Python.
 
+Included is an example map with some structures in it.
+Edit the "self._map" variable in main.py to change it.
+
+
 ## Compatibility
-- This renderer was written in Python 3.13, and may not run with older versions
+This renderer was written in Python 3.13, and may not run with older versions
 
 ## License
 simple-3d-renderer is licensed under the WTFPL.
