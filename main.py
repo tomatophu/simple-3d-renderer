@@ -8,11 +8,51 @@ import pygame as pg
 from classes import Camera
 from classes import Map
 
+
 WHITE = pg.Color('white')
 BLACK = pg.Color('black')
 
+
+MAP = Map(
+    (-0.5, -0.5, 1),
+    (0.5, -0.5, 1),
+    (-0.5, -0.5, 2),
+    (0.5, -0.5, 2),
+    (-0.5, 0.5, 1),
+    (0.5, 0.5, 1),
+    (-0.5, 0.5, 2),
+    (0.5, 0.5, 2),
+
+    (1.5, 0, 1.5),
+    (2.5, 0, 1.5),
+    (2, 0, 2),
+    (2, 0, 1),
+    (2, -0.5, 1.5),
+    (2, 0.5, 1.5),
+
+    connections=[
+        (0, 2),
+        (1, 3),
+        (2, 3),
+        (0, 1),
+        (4, 6),
+        (5, 7),
+        (6, 7),
+        (4, 5),
+        (0, 4),
+        (1, 5),
+        (2, 6),
+        (3, 7),
+
+        (8, 9),
+        (10, 11),
+        (12, 13),
+    ]
+)
+
+
 class Game(object):
-    def __init__(self: Self):
+    def __init__(self: Self, point_map: Map):
         pg.init()
         self._screen_size = (1280, 720)
 
@@ -22,47 +62,11 @@ class Game(object):
                                            flags=pg.RESIZABLE | pg.SCALED,
                                            vsync=1)
         pg.display.set_caption('3D Renderer')
+        self._font = pg.font.SysFont('helvetica', 20)
         self._clock = pg.time.Clock()
-
         self._camera = Camera()
 
-        self._map = Map(
-            (-0.5, -0.5, 1),
-            (0.5, -0.5, 1),
-            (-0.5, -0.5, 2),
-            (0.5, -0.5, 2),
-            (-0.5, 0.5, 1),
-            (0.5, 0.5, 1),
-            (-0.5, 0.5, 2),
-            (0.5, 0.5, 2),
-
-            (1.5, 0, 1.5),
-            (2.5, 0, 1.5),
-            (2, 0, 2),
-            (2, 0, 1),
-            (2, -0.5, 1.5),
-            (2, 0.5, 1.5),
-
-            connections=[
-                (0, 2),
-                (1, 3),
-                (2, 3),
-                (0, 1),
-                (4, 6),
-                (5, 7),
-                (6, 7),
-                (4, 5),
-                (0, 4),
-                (1, 5),
-                (2, 6),
-                (3, 7),
-
-                (8, 9),
-                (10, 11),
-                (12, 13),
-            ]
-        )
-        self._font = pg.font.SysFont('helvetica', 20)
+        self._map = point_map
 
     def run(self: Self):
         self._running = 1
@@ -128,4 +132,4 @@ class Game(object):
 
 
 if __name__ == '__main__':
-    Game().run()
+    Game(MAP).run()
