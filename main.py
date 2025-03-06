@@ -88,7 +88,6 @@ class Game(object):
                         self._camera.pos = [0, 0, 0]
                     self._camera.dir = [0, 0, 0]
 
-            # relative x, y, z
             mvt = (keys[pg.K_w] - keys[pg.K_s],
                    keys[pg.K_SPACE] - keys[pg.K_LSHIFT],
                    keys[pg.K_a] - keys[pg.K_d],
