@@ -2,7 +2,7 @@
 A simple point-based 3D renderer written in Python.
 
 Included is an example map with some structures in it.
-Edit the "self._map" variable in main.py to change it.
+Edit the "MAP" constant in main.py to change it.
 
 ## Keybindings
 Use `<WASD>` to move forward, left right, and back.  
