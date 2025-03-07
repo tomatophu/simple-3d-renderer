@@ -138,7 +138,7 @@ class Game(object):
             ]
 
             for dex, line in enumerate(text):
-                pos = (self._font_size / 2, self._font_size / 2)
+                pos = [self._font_size / 2, self._font_size / 2]
                 pos[1] += dex * self._font_size * 1.25
                 self._screen.blit(self._font.render(line, 1, WHITE), pos)
 
