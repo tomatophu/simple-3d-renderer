@@ -6,10 +6,12 @@ Edit the "MAP" constant in main.py to change it.
 
 ## Keybindings
 Use `<WASD>` to move forward, left right, and back.  
-Use `<Space>` and `<Shift>` to move up and down.  
+Use `<Space>` and `<LShift>` to move up and down.  
 Use the `<arrow keys>` to change pitch and yaw.  
 Use the `<apostrophe>` and `<return>` to change roll.  
 Use `<r>` to reset direction, and `<Meta-r>` to reset position and direction.  
+Use `<comma>` and `<period>` to change point radius.  
+Use `<RShift>` to toggle antialiasing.
 
 ## Compatibility
 - This renderer was written in Python 3.13, and may not run with older versions.
