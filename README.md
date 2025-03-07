@@ -1,7 +1,7 @@
 # simple-3d-renderer
 A simple point-based 3D renderer written in Python.
 
-Included is an example map with some structures in it.
+Included is an example map with the Utah Teapot in it.
 Edit the "MAP" constant in main.py to change it.
 
 ## Keybindings
