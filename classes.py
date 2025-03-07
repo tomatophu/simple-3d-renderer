@@ -130,7 +130,8 @@ class Camera(object):
     def render(self: Self,
                surf: pg.Surface, 
                radius: Real=4,
-               color: pg.Color=pg.Color('white')):
+               color: pg.Color=pg.Color('white'),
+               antialiasing: bool=True):
 
         surf_size = surf.get_size()
         surf_rect = surf.get_rect()
@@ -186,16 +187,25 @@ class Camera(object):
 
             # draw points
             if rel_vector[2] > 0:
-                pg.draw.aacircle(surf, color, proj_points[-1], radius)
+                if antialiasing:
+                    pg.draw.aacircle(surf, color, proj_points[-1], radius)
+                else:
+                    pg.draw.circle(surf, color, proj_points[-1], radius)
         
         # draw lines
         for connection in self._map.connections:
             try:
                 if (rot_points[connection[0]][2] > 0
                     and rot_points[connection[1]][2] > 0):
-                    pg.draw.aaline(surf, color,
-                                   proj_points[connection[0]],
-                                   proj_points[connection[1]])
+                    if antialiasing:
+                        pg.draw.aaline(surf, color,
+                                       proj_points[connection[0]],
+                                       proj_points[connection[1]])
+                    else:
+                        pg.draw.line(surf, color,
+                                     proj_points[connection[0]],
+                                     proj_points[connection[1]])
+
             except IndexError:
                 raise ValueError('invalid connections')
 

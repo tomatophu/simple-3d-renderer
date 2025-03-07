@@ -66,7 +66,7 @@ MAP = Map(
     ]
 )
 # Overwrite map with Utah Teapot
-from teapot import MAP
+from maps.teapot import MAP
 
 
 class Game(object):
@@ -89,7 +89,10 @@ class Game(object):
 
     def run(self: Self):
         self._running = 1
-        start_time = time.time() 
+        start_time = time.time()
+        antialiasing = 1
+        point_radius = 1
+
         while self._running:
             
             delta_time = time.time() - start_time
@@ -104,14 +107,22 @@ class Game(object):
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self._running = 0
-                elif event.type == pg.KEYDOWN and event.key == pg.K_r:
-                    if keys[pg.K_LMETA] or keys[pg.K_RMETA]:
-                        self._camera.x = 0
-                        self._camera.y = 0
-                        self._camera.z = 0
-                    self._camera.yaw = 0
-                    self._camera.pitch = 0
-                    self._camera.roll = 0
+                elif event.type == pg.KEYDOWN:
+                    if event.key == pg.K_r:
+                        if keys[pg.K_LMETA] or keys[pg.K_RMETA]:
+                            self._camera.x = 0
+                            self._camera.y = 0
+                            self._camera.z = 0
+                        self._camera.yaw = 0
+                        self._camera.pitch = 0
+                        self._camera.roll = 0
+                    elif event.key == pg.K_RSHIFT:
+                        antialiasing = not antialiasing
+                    elif event.key == pg.K_COMMA:
+                        point_radius = max(point_radius - 1, 1)
+                    elif event.key == pg.K_PERIOD:
+                        point_radius += 1
+
 
             mvt = (keys[pg.K_w] - keys[pg.K_s],
                    keys[pg.K_SPACE] - keys[pg.K_LSHIFT],
@@ -135,7 +146,11 @@ class Game(object):
             self._camera.roll += math.radians(mvt[5]) * rel_game_speed
  
             self._screen.fill(BLACK)
-            self._camera.render(self._screen, 2)
+            self._camera.render(
+                self._screen,
+                point_radius,
+                antialiasing=antialiasing
+            )
             
             text = [
                 f'x: {self._camera.x}',
@@ -144,6 +159,8 @@ class Game(object):
                 f'Yaw: {self._camera.yaw} rad',
                 f'Pitch: {self._camera.pitch} rad',
                 f'Roll: {self._camera.roll} rad',
+                f'Antialiasing: {'On' if antialiasing else 'Off'}',
+                f'Point Radius: {point_radius}',
                 f'FPS: {round(fps, 2) if delta_time else fps}',
             ]
 
