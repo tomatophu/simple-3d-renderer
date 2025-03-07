@@ -13,6 +13,7 @@ WHITE = pg.Color('white')
 BLACK = pg.Color('black')
 
 
+# Cube, pyramid, star map
 MAP = Map(
     (-0.5, -0.5, 1),
     (0.5, -0.5, 1),
@@ -64,8 +65,6 @@ MAP = Map(
         (17, 16),
     ]
 )
-
-
 # Overwrite map with Utah Teapot
 from teapot import MAP
 
@@ -96,7 +95,7 @@ class Game(object):
             delta_time = time.time() - start_time
             start_time = time.time()
 
-            fps = round(1 / delta_time, 2) if delta_time else 'infinity'
+            fps = 1 / delta_time if delta_time else 'infinity'
 
             rel_game_speed = delta_time * self._game_speed
 
@@ -145,7 +144,7 @@ class Game(object):
                 f'Yaw: {self._camera.yaw} rad',
                 f'Pitch: {self._camera.pitch} rad',
                 f'Roll: {self._camera.roll} rad',
-                f'FPS: {fps}',
+                f'FPS: {round(fps, 2) if delta_time else fps}',
             ]
 
             for dex, line in enumerate(text):
