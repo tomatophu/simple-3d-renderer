@@ -12,7 +12,8 @@ Use the `<apostrophe>` and `<return>` to change roll.
 Use `<r>` to reset direction, and `<Meta-r>` to reset position and direction.  
 
 ## Compatibility
-This renderer was written in Python 3.13, and may not run with older versions.
+- This renderer was written in Python 3.13, and may not run with older versions.
+- This renderer was made with Pygame-CE and may take some tweaking to work with the original Pygame library.
 
 ## License
 simple-3d-renderer is licensed under the WTFPL.
