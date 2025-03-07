@@ -66,6 +66,10 @@ MAP = Map(
 )
 
 
+# Overwrite map with Utah Teapot
+from teapot import MAP
+
+
 class Game(object):
     def __init__(self: Self, point_map: Map):
         pg.init()
@@ -91,6 +95,8 @@ class Game(object):
             
             delta_time = time.time() - start_time
             start_time = time.time()
+
+            fps = round(1 / delta_time, 2) if delta_time else 'infinity'
 
             rel_game_speed = delta_time * self._game_speed
 
@@ -139,6 +145,7 @@ class Game(object):
                 f'Yaw: {self._camera.yaw} rad',
                 f'Pitch: {self._camera.pitch} rad',
                 f'Roll: {self._camera.roll} rad',
+                f'FPS: {fps}',
             ]
 
             for dex, line in enumerate(text):

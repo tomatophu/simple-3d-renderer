@@ -11,8 +11,8 @@ class Map(object):
                  *points: Sequence[Sequence[Real]],
                  connections: Sequence[Sequence[int]]=[]):
 
-        self._points = points
-        self._connections = connections
+        self._points = list(points)
+        self._connections = list(connections)
 
     @property
     def connections(self: Self):
@@ -23,12 +23,10 @@ class Map(object):
         self._connections = list(value)
 
     def add_connection(self: Self, connection: Sequence[int]):
-        if connection in self._connection:
-            raise ValueError('connection already in map')
         self._connections.append(connection)
 
     def remove_connection(self: Self, connection: Sequence[int]):
-        self._connection.remove(point)
+        self._connections.remove(point)
 
     @property
     def points(self: Self):
@@ -39,8 +37,6 @@ class Map(object):
         self._points = list(value)
 
     def add_point(self: Self, point: Sequence[Real]):
-        if point in self._points:
-            raise ValueError('point already in map')
         self._points.append(point)
 
     def remove_point(self: Self, point: Sequence[Real]):
@@ -135,12 +131,13 @@ class Camera(object):
                surf: pg.Surface, 
                radius: Real=4,
                color: pg.Color=pg.Color('white')):
+
         surf_size = surf.get_size()
         surf_rect = surf.get_rect()
         semisize = (surf_size[0] / 2, surf_size[1] / 2)
         rot_points = []
         proj_points = []
-        
+
         for point in self._map.points:
             rel_vector = pg.math.Vector3(point[0] - self._pos[0],
                                          point[1] - self._pos[1],
@@ -150,9 +147,9 @@ class Camera(object):
             rel_vector.rotate_y_rad_ip(self._dir[0])
             rel_vector.rotate_x_rad_ip(self._dir[1])
             rel_vector.rotate_z_rad_ip(self._dir[2])
-
-            # Rotataion by Matrix Multiplication (manual) (yaw & pitch only)
+            
             """
+            # Rotataion by Matrix Multiplication (manual implementation)
             # Around y-axis
             trig = (math.cos(self._dir[0]), math.sin(self._dir[0]))
             vector_old = rel_vector.copy()
@@ -164,9 +161,15 @@ class Camera(object):
             vector_old = rel_vector.copy()
             rel_vector[1] = trig[0] * vector_old[1] - trig[1] * vector_old[2]
             rel_vector[2] = trig[1] * vector_old[1] + trig[0] * vector_old[2]
+
+            # Around z-axis
+            trig = (math.cos(self._dir[2]), math.sin(self._dir[2]))
+            vector_old = rel_vector.copy()
+            rel_vector[0] = trig[0] * vector_old[0] - trig[1] * vector_old[1] 
+            rel_vector[1] = trig[1] * vector_old[0] + trig[0] * vector_old[1]
             """
             
-            # rot_points is used when calculating wheter to draw lines
+            # rot_points is used when calculating whether to draw lines
             rot_points.append(list(rel_vector))
             
             # ratio of x:z / y:z used for projection
@@ -187,9 +190,12 @@ class Camera(object):
         
         # draw lines
         for connection in self._map.connections:
-            if (rot_points[connection[0]][2] > 0
-                and rot_points[connection[1]][2] > 0):
-                pg.draw.aaline(surf, color,
-                               proj_points[connection[0]],
-                               proj_points[connection[1]])
+            try:
+                if (rot_points[connection[0]][2] > 0
+                    and rot_points[connection[1]][2] > 0):
+                    pg.draw.aaline(surf, color,
+                                   proj_points[connection[0]],
+                                   proj_points[connection[1]])
+            except IndexError:
+                raise ValueError('invalid connections')
 
