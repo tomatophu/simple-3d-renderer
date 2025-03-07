@@ -122,6 +122,14 @@ class Camera(object):
     @map.setter
     def map(self: Self, value: Map):
         self._map = value
+
+    @property
+    def fov(self: Self):
+        return self._fov
+
+    @fov.setter
+    def fov(self: Self, value: Real):
+        self._fov = value
     
     def render(self: Self,
                surf: pg.Surface, 

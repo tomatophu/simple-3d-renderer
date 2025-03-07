@@ -101,8 +101,12 @@ class Game(object):
                     self._running = 0
                 elif event.type == pg.KEYDOWN and event.key == pg.K_r:
                     if keys[pg.K_LMETA] or keys[pg.K_RMETA]:
-                        self._camera.pos = [0, 0, 0]
-                    self._camera.dir = [0, 0, 0]
+                        self._camera.x = 0
+                        self._camera.y = 0
+                        self._camera.z = 0
+                    self._camera.yaw = 0
+                    self._camera.pitch = 0
+                    self._camera.roll = 0
 
             mvt = (keys[pg.K_w] - keys[pg.K_s],
                    keys[pg.K_SPACE] - keys[pg.K_LSHIFT],
