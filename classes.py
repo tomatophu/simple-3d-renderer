@@ -16,60 +16,124 @@ class Map(object):
 
     @property
     def connections(self: Self):
-        return self._connections
+        return tuple(self._connections)
 
     @connections.setter
     def connections(self: Self, value: Sequence[Sequence[int]]):
-        self._connections = value
-    
+        self._connections = list(value)
+
+    def add_connection(self: Self, connection: Sequence[int]):
+        if connection in self._connection:
+            raise ValueError('connection already in map')
+        self._connections.append(connection)
+
+    def remove_connection(self: Self, connection: Sequence[int]):
+        self._connection.remove(point)
+
     @property
     def points(self: Self):
-        return self._points
+        return tuple(self._points)
 
     @points.setter
     def points(self: Self, value: Sequence[Sequence[Real]]):
-        self._points = value
+        self._points = list(value)
+
+    def add_point(self: Self, point: Sequence[Real]):
+        if point in self._points:
+            raise ValueError('point already in map')
+        self._points.append(point)
+
+    def remove_point(self: Self, point: Sequence[Real]):
+        self._points.remove(point)
 
 
 class Camera(object):
-    def __init__(self: Self):
+    def __init__(self: Self, point_map: Map, fov: Real=90):
         # x, y, z
         self._pos = [0, 0, 0]
         # yaw, pitch, roll (radians)
         self._dir = [0, 0, 0]
-    
+
+        self._map = point_map
+        self._fov = fov
+        # fov is up and down (you can see more side-to-side)
+        self._fov_mult = 1 / math.sin(math.radians(fov / 2))
+
     @property
     def pos(self: Self):
-        return self._pos
-
-    @pos.setter
-    def pos(self: Self, value: list[Real]):
-        self._pos = value
+        return tuple(self._pos)
 
     @property
-    def dir(self: Self):
-        return self._dir
+    def x(self: Self):
+        return self._pos[0]
 
-    @dir.setter
-    def dir(self: Self, value: list[Real]):
-        self._dir = value
+    @x.setter
+    def x(self: Self, value: Real):
+        self._pos[0] = value
+
+    @property
+    def y(self: Self):
+        return self._pos[1]
+
+    @y.setter
+    def y(self: Self, value: Real):
+        self._pos[1] = value
+
+    @property
+    def z(self: Self):
+        return self._pos[2]
+
+    @z.setter
+    def z(self: Self, value: Real):
+        self._pos[2] = value
+    
+    @property
+    def dir(self: Self):
+        return tuple(self._dir)
+
+    @property
+    def yaw(self: Self):
+        return self._dir[0]
+
+    @yaw.setter
+    def yaw(self: Self, value: Real):
+        self._dir[0] = value
+    
+    @property
+    def pitch(self: Self):
+        return self._dir[1]
+
+    @pitch.setter
+    def pitch(self: Self, value: Real):
+        self._dir[1] = value
+
+    @property
+    def roll(self: Self):
+        return self._dir[2]
+
+    @roll.setter
+    def roll(self: Self, value: Real):
+        self._dir[2] = value
+    
+    @property
+    def map(self: Self):
+        return self._map
+
+    @map.setter
+    def map(self: Self, value: Map):
+        self._map = value
     
     def render(self: Self,
-               surf: pg.Surface,
-               points: Map,
+               surf: pg.Surface, 
                radius: Real=4,
-               color: pg.Color=pg.Color('white'),
-               fov: Real=90):
+               color: pg.Color=pg.Color('white')):
         surf_size = surf.get_size()
         surf_rect = surf.get_rect()
         semisize = (surf_size[0] / 2, surf_size[1] / 2)
         rot_points = []
         proj_points = []
         
-        # fov is up and down (you can see more side-to-side)
-        fov_mult = 1 / math.sin(math.radians(fov / 2))
-
-        for point in points.points:
+        for point in self._map.points:
             rel_vector = pg.math.Vector3(point[0] - self._pos[0],
                                          point[1] - self._pos[1],
                                          point[2] - self._pos[2])
@@ -104,16 +168,17 @@ class Camera(object):
                           rel_vector[1] / rel_vector[2])
             
             # final projection
-            proj_point = (ratios[0] * fov_mult * semisize[1] + semisize[0],
-                          -ratios[1] * fov_mult * semisize[1] + semisize[1])
-            proj_points.append(proj_point)
+            proj_points.append((ratios[0] * self._fov_mult
+                                * semisize[1] + semisize[0],
+                                -ratios[1] * self._fov_mult
+                                * semisize[1] + semisize[1]))
 
             # draw points
             if rel_vector[2] > 0:
                 pg.draw.aacircle(surf, color, proj_points[-1], radius)
         
         # draw lines
-        for connection in points.connections:
+        for connection in self._map.connections:
             if (rot_points[connection[0]][2] > 0
                 and rot_points[connection[1]][2] > 0):
                 pg.draw.aaline(surf, color,
