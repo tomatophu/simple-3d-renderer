@@ -20,6 +20,9 @@ from maps.teapot import MAP
 class Game(object):
     def __init__(self: Self, point_map: Map):
         pg.init()
+        # KEYDOWN events are not used for movement, so this is fine
+        pg.key.set_repeat(400, 60)
+
         self._screen_size = (1280, 720)
 
         self._running = 0
