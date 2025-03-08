@@ -4,6 +4,8 @@ A simple CPU-based 3D renderer written in Python.
 Included is an example map with the Utah Teapot in it.
 Edit the "MAP" constant in main.py to change it.
 
+![logo](https://github.com/user-attachments/assets/7f5bdbbd-e690-4ea8-a9f4-3cc13431f3b3)
+
 ## Keybindings
 Use `<WASD>` to move forward, left right, and back.  
 Use `<Space>` and `<LShift>` to move up and down.  
