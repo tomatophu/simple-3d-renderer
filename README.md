@@ -13,6 +13,7 @@ Use `<arrow keys>` to change pitch and yaw.
 Use `<apostrophe>` and `<return>` to change roll.  
 Use `<r>` to reset direction, and `<Meta-r>` to reset position and direction.  
 Use `<comma>` and `<period>` to change point radius.  
+Use `<Meta-comma>` and `<Meta-period>` to change line thickness.  
 Use `<RShift>` to toggle antialiasing.
 
 ## Compatibility
