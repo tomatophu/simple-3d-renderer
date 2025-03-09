@@ -23,16 +23,16 @@ class Game(object):
         # KEYDOWN events are not used for movement, so this is fine
         pg.key.set_repeat(400, 60)
 
-        self._screen_size = (1280, 720)
+        self._SCREEN_SIZE = (1280, 720)
+        self._GAME_SPEED = 60
+        self._FONT_SIZE = int(self._SCREEN_SIZE[1] / 36)
 
         self._running = 0
-        self._game_speed = 60
-        self._screen = pg.display.set_mode(self._screen_size,
+        self._screen = pg.display.set_mode(self._SCREEN_SIZE,
                                            flags=pg.RESIZABLE | pg.SCALED,
                                            vsync=1)
         pg.display.set_caption('3D Renderer')
-        self._font_size = int(self._screen_size[1] / 36)
-        self._font = pg.font.SysFont('helvetica', self._font_size)
+        self._font = pg.font.SysFont('helvetica', self._FONT_SIZE)
         self._clock = pg.time.Clock()
 
         self._map = point_map
@@ -53,7 +53,7 @@ class Game(object):
 
             fps = 1 / delta_time if delta_time else 'infinity'
 
-            rel_game_speed = delta_time * self._game_speed
+            rel_game_speed = delta_time * self._GAME_SPEED
 
             keys = pg.key.get_pressed()
 
@@ -125,8 +125,8 @@ class Game(object):
             ]
 
             for dex, line in enumerate(text):
-                pos = [self._font_size / 2, self._font_size / 2]
-                pos[1] += dex * self._font_size * 1.25
+                pos = [self._FONT_SIZE / 2, self._FONT_SIZE / 2]
+                pos[1] += dex * self._FONT_SIZE * 1.25
                 self._screen.blit(self._font.render(line, 1, WHITE), pos)
 
             pg.display.update()
