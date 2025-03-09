@@ -43,7 +43,7 @@ class Game(object):
         start_time = time.time()
 
         antialiasing = 0
-        point_radius = 1
+        point_radius = 0
         line_thickness = 2
 
         while self._running:
@@ -73,9 +73,9 @@ class Game(object):
                         antialiasing = not antialiasing
                     elif event.key == pg.K_COMMA:
                         if keys[pg.K_LMETA] or keys[pg.K_RMETA]:
-                            line_thickness = max(line_thickness - 1, 1)
+                            line_thickness = max(line_thickness - 1, 0)
                         else:
-                            point_radius = max(point_radius - 1, 1)
+                            point_radius = max(point_radius - 1, 0)
                     elif event.key == pg.K_PERIOD:
                         if keys[pg.K_LMETA] or keys[pg.K_RMETA]:
                             line_thickness += 1

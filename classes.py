@@ -194,16 +194,18 @@ class Camera(object):
 
             # draw points
             if rel_vector[2] > 0:
-                if antialiasing:
-                    pg.draw.aacircle(surf, color, proj_points[-1], radius)
-                else:
-                    pg.draw.circle(surf, color, proj_points[-1], radius)
+                if radius:
+                    if antialiasing:
+                        pg.draw.aacircle(surf, color, proj_points[-1], radius)
+                    else:
+                        pg.draw.circle(surf, color, proj_points[-1], radius)
         
         # draw lines
         for connection in self._map.connections:
             try:
                 if (rot_points[connection[0]][2] > 0
-                    and rot_points[connection[1]][2] > 0):
+                    and rot_points[connection[1]][2] > 0
+                    and thickness):
                     if antialiasing:
                         pg.draw.aaline(surf, color,
                                        proj_points[connection[0]],
