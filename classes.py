@@ -130,6 +130,7 @@ class Camera(object):
     def render(self: Self,
                surf: pg.Surface, 
                radius: Real=4,
+               thickness: Real=1,
                color: pg.Color=pg.Color('white'),
                antialiasing: bool=True):
 
@@ -138,6 +139,12 @@ class Camera(object):
         semisize = (surf_size[0] / 2, surf_size[1] / 2)
         rot_points = []
         proj_points = []
+
+        """
+        trig_values = ((math.cos(self._dir[0]), math.sin(self._dir[0])),
+                       (math.cos(self._dir[1]), math.sin(self._dir[1])),
+                       (math.cos(self._dir[2]), math.sin(self._dir[2])))
+        """
 
         for point in self._map.points:
             rel_vector = pg.math.Vector3(point[0] - self._pos[0],
@@ -148,23 +155,23 @@ class Camera(object):
             rel_vector.rotate_y_rad_ip(self._dir[0])
             rel_vector.rotate_x_rad_ip(self._dir[1])
             rel_vector.rotate_z_rad_ip(self._dir[2])
-            
+
             """
             # Rotataion by Matrix Multiplication (manual implementation)
             # Around y-axis
-            trig = (math.cos(self._dir[0]), math.sin(self._dir[0]))
+            trig = trig_values[0] 
             vector_old = rel_vector.copy()
             rel_vector[0] = trig[0] * vector_old[0] + trig[1] * vector_old[2]
             rel_vector[2] = -trig[1] * vector_old[0] + trig[0] * vector_old[2]
             
             # Around x-axis
-            trig = (math.cos(self._dir[1]), math.sin(self._dir[1]))
+            trig = trig_values[1] 
             vector_old = rel_vector.copy()
             rel_vector[1] = trig[0] * vector_old[1] - trig[1] * vector_old[2]
             rel_vector[2] = trig[1] * vector_old[1] + trig[0] * vector_old[2]
 
             # Around z-axis
-            trig = (math.cos(self._dir[2]), math.sin(self._dir[2]))
+            trig = trig_values[2] 
             vector_old = rel_vector.copy()
             rel_vector[0] = trig[0] * vector_old[0] - trig[1] * vector_old[1] 
             rel_vector[1] = trig[1] * vector_old[0] + trig[0] * vector_old[1]
@@ -178,7 +185,7 @@ class Camera(object):
             if rel_vector[2]: # avoid zero-division
                 ratios = (rel_vector[0] / rel_vector[2],
                           rel_vector[1] / rel_vector[2])
-            
+
             # final projection
             proj_points.append((ratios[0] * self._fov_mult
                                 * semisize[1] + semisize[0],
@@ -200,11 +207,13 @@ class Camera(object):
                     if antialiasing:
                         pg.draw.aaline(surf, color,
                                        proj_points[connection[0]],
-                                       proj_points[connection[1]])
+                                       proj_points[connection[1]],
+                                       thickness)
                     else:
                         pg.draw.line(surf, color,
                                      proj_points[connection[0]],
-                                     proj_points[connection[1]])
+                                     proj_points[connection[1]],
+                                     thickness)
 
             except IndexError:
                 raise ValueError('invalid connections')

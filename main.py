@@ -43,6 +43,7 @@ class Game(object):
         start_time = time.time()
         antialiasing = 1
         point_radius = 1
+        line_thickness = 1
 
         while self._running:
             
@@ -70,10 +71,15 @@ class Game(object):
                     elif event.key == pg.K_RSHIFT:
                         antialiasing = not antialiasing
                     elif event.key == pg.K_COMMA:
-                        point_radius = max(point_radius - 1, 1)
+                        if keys[pg.K_LMETA] or keys[pg.K_RMETA]:
+                            line_thickness = max(line_thickness - 1, 1)
+                        else:
+                            point_radius = max(point_radius - 1, 1)
                     elif event.key == pg.K_PERIOD:
-                        point_radius += 1
-
+                        if keys[pg.K_LMETA] or keys[pg.K_RMETA]:
+                            line_thickness += 1
+                        else:
+                            point_radius += 1
 
             mvt = (keys[pg.K_w] - keys[pg.K_s],
                    keys[pg.K_SPACE] - keys[pg.K_LSHIFT],
@@ -100,6 +106,7 @@ class Game(object):
             self._camera.render(
                 self._screen,
                 point_radius,
+                line_thickness,
                 antialiasing=antialiasing
             )
             
