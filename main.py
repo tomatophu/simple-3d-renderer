@@ -82,12 +82,12 @@ class Game(object):
                         else:
                             point_radius += 1
 
-            mvt = (keys[pg.K_w] - keys[pg.K_s],
-                   keys[pg.K_SPACE] - keys[pg.K_LSHIFT],
-                   keys[pg.K_a] - keys[pg.K_d],
-                   keys[pg.K_LEFT] - keys[pg.K_RIGHT],
-                   keys[pg.K_UP] - keys[pg.K_DOWN],
-                   keys[pg.K_RETURN] - keys[pg.K_QUOTE])
+            mvt = (keys[pg.K_w] - keys[pg.K_s], # forward and backward
+                   keys[pg.K_SPACE] - keys[pg.K_LSHIFT], # up and down
+                   keys[pg.K_a] - keys[pg.K_d], # left and right
+                   keys[pg.K_LEFT] - keys[pg.K_RIGHT], # changing yaw
+                   keys[pg.K_UP] - keys[pg.K_DOWN], # changing pitch
+                   keys[pg.K_RETURN] - keys[pg.K_QUOTE]) # changing roll
 
             self._camera.y += mvt[1] * 0.025 * rel_game_speed
             
