@@ -119,6 +119,7 @@ class Game(object):
                 f'Roll: {self._camera.roll} rad',
                 f'Antialiasing: {'On' if antialiasing else 'Off'}',
                 f'Point Radius: {point_radius}',
+                f'Line Thickness: {line_thickness}',
                 f'FPS: {round(fps, 2) if delta_time else fps}',
             ]
 
