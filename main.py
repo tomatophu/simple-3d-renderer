@@ -41,9 +41,10 @@ class Game(object):
     def run(self: Self):
         self._running = 1
         start_time = time.time()
-        antialiasing = 1
+
+        antialiasing = 0
         point_radius = 1
-        line_thickness = 1
+        line_thickness = 2
 
         while self._running:
             
